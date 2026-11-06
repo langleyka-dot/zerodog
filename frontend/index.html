@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroDog — AI Behavioral FinOps & MCP Governance Proxy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @keyframes pulse-emerald {
+      0%, 100% { stroke: #10b981; stroke-width: 3; }
+      50% { stroke: #34d399; stroke-width: 5; }
+    }
+    .edge-remediated {
+      animation: pulse-emerald 2s infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-slate-950">
+
+  <!-- TOP ENTERPRISE TELEMETRY BAR -->
+  <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-50 px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center font-black text-xl text-slate-950 shadow-lg shadow-emerald-500/20">
+        ZD
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="font-bold text-lg tracking-tight text-white">ZeroDog</h1>
+          <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Edge MCP Proxy</span>
+        </div>
+        <p class="text-xs text-slate-400">Zero-Ingestion Behavioral Governance & Trophic Niche Optimizer</p>
+      </div>
+    </div>
+
+    <!-- METRICS RIBBON -->
+    <div class="flex items-center space-x-6">
+      <div class="text-right">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">Tokens Monitored</span>
+        <span id="metric-tokens" class="text-sm font-mono font-bold text-slate-200">14.8M</span>
+      </div>
+      <div class="h-6 w-px bg-slate-800"></div>
+      <div class="text-right">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block">ZeroDog Savings</span>
+        <span id="metric-savings" class="text-sm font-mono font-bold text-emerald-400">$1,218.40</span>
+      </div>
+      <div class="h-6 w-px bg-slate-800"></div>
+      <div class="text-right">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-teal-400 block">Datadog Fees Avoided</span>
+        <span id="metric-datadog" class="text-sm font-mono font-bold text-teal-300">$384.60</span>
+      </div>
+      <div class="h-6 w-px bg-slate-800"></div>
+      <button 
+        data-testid="demo-reset-btn"
+        onclick="resetDemoState()"
+        class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 transition flex items-center space-x-1.5">
+        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+        <span>Reset Demo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- VIEW TABS -->
+  <div class="bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between">
+    <div class="flex space-x-1 py-1.5">
+      <button 
+        id="tab-command-btn"
+        onclick="switchTab('command')"
+        class="px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 transition flex items-center space-x-2">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <span>Operational Command Center</span>
+      </button>
+      <button 
+        id="tab-challenge-btn"
+        data-testid="challenge-tab-btn"
+        onclick="switchTab('challenge')"
+        class="px-4 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center space-x-2">
+        <i data-lucide="flame" class="w-4 h-4 text-orange-400"></i>
+        <span>🔥 Roast My Stack (Live Challenge)</span>
+      </button>
+    </div>
+    <div class="text-xs text-slate-400 font-mono flex items-center space-x-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span>Live Edge Proxy: Active</span>
+    </div>
+  </div>
+
+  <!-- MAIN OPERATIONAL VIEW -->
+  <main id="view-command" class="flex-1 grid grid-cols-12 gap-0 overflow-hidden">
+    
+    <!-- LEFT RAIL: INCIDENTS -->
+    <aside class="col-span-3 border-r border-slate-800 bg-slate-900/50 p-4 overflow-y-auto space-y-3">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Trophic Incidents</h2>
+        <span id="incident-count-badge" class="bg-red-950 text-red-400 border border-red-800 text-[10px] font-bold px-2 py-0.5 rounded-full">3 Active</span>
+      </div>
+      
+      <div id="incident-cards-container" class="space-y-2">
+      </div>
+
+      <div class="pt-4 border-t border-slate-800">
+        <div class="rounded-lg bg-slate-800/60 p-3 border border-slate-700/60 text-xs text-slate-400 space-y-1.5">
+          <div class="flex items-center space-x-1.5 text-slate-300 font-semibold">
+            <i data-lucide="leaf" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Ecological FinOps Lens</span>
+          </div>
+          <p class="text-[11px] leading-relaxed">
+            ZeroDog treats token burn as caloric consumption. Niche partitioning prevents dispatching apex megaherbivores (Opus) to pluck single thorn pods.
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER CANVAS: COGNEE SEARCH & CAUSAL TOPOLOGY -->
+    <section class="col-span-5 p-4 flex flex-col space-y-4 overflow-y-auto border-r border-slate-800">
+      
+      <!-- COGNEE QUERY CONSOLE -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+            <i data-lucide="compass" class="w-3.5 h-3.5 text-teal-400"></i>
+            <span>Cognee Causal Web Search</span>
+          </label>
+          <span class="text-[10px] text-slate-500 font-mono">Graph Traversal v2</span>
+        </div>
+        
+        <div class="flex space-x-2">
+          <div class="relative flex-1">
+            <input 
+              id="cognee-query-input"
+              data-testid="governance-query-input"
+              type="text" 
+              placeholder="e.g. 'commit message overkill' or 'algal retry loop'"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono"
+              onkeydown="if(event.key === 'Enter') submitQuery()"
+            />
+          </div>
+          <button 
+            data-testid="governance-query-submit"
+            onclick="submitQuery()"
+            class="bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold px-3.5 py-2 rounded-lg text-xs transition flex items-center space-x-1 shadow">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+            <span>Navigate</span>
+          </button>
+        </div>
+
+        <!-- 3 STRANGER DEMO PRESET CHIPS -->
+        <div class="flex items-center space-x-1.5 pt-1 overflow-x-auto text-[11px]">
+          <span class="text-slate-500 text-[10px] uppercase font-bold mr-1">Presets:</span>
+          <button 
+            data-testid="preset-query-checkout"
+            onclick="applyPreset('commit message overkill')"
+            class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded text-[11px] border border-slate-700 transition">
+            🦣 Opus Overkill Spikes
+          </button>
+          <button 
+            data-testid="preset-query-loop"
+            onclick="applyPreset('algal retry loop')"
+            class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded text-[11px] border border-slate-700 transition">
+            🦠 Infinite MCP Tool Loop
+          </button>
+          <button 
+            data-testid="preset-query-sec"
+            onclick="applyPreset('sec compliance batch')"
+            class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2 py-1 rounded text-[11px] border border-amber-900/60 transition">
+            🔥 SEC Prescribed Burn
+          </button>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE SVG CAUSAL TOPOLOGY GRAPH -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 flex-1 flex flex-col space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="git-fork" class="w-4 h-4 text-emerald-400"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Causal Topology Graph</h3>
+          </div>
+          <span id="causal-graph-status" class="text-[10px] text-slate-400 font-mono">Live Subgraph</span>
+        </div>
+
+        <div id="svg-graph-container" class="flex-1 bg-slate-950 rounded-lg border border-slate-800/80 p-2 flex items-center justify-center relative min-h-[220px]">
+        </div>
+
+        <div class="flex items-center justify-between text-[10px] text-slate-500 px-1 font-mono">
+          <span>● User (Forager)</span>
+          <span>● Prompt (Strategy)</span>
+          <span>● Tool (Pathway)</span>
+          <span>● Model (Trophic Tier)</span>
+          <span>● Quota Pool (Carrying Capacity)</span>
+        </div>
+      </div>
+
+      <!-- WALL OF SHAME VS HALL OF FAME LEADERBOARD -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-1.5">
+            <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Trophic Leaderboard & Quotas</h3>
+          </div>
+          <span class="text-[10px] text-slate-500">Robin Hood Engine</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-slate-500 border-b border-slate-800 text-[10px] uppercase font-bold">
+                <th class="py-1">Engineer</th>
+                <th class="py-1">Tier</th>
+                <th class="py-1">Efficiency</th>
+                <th class="py-1">Daily Quota</th>
+                <th class="py-1 text-right">Reputation</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-table-body" class="divide-y divide-slate-800/60 font-mono text-[11px]">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT DECK: JEV VERDICT & 3-WAY GOVERNANCE EXECUTION -->
+    <aside class="col-span-4 p-4 flex flex-col space-y-4 overflow-y-auto">
+      
+      <!-- INCIDENT BANNER & DIAGNOSIS -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        <div class="flex items-start justify-between">
+          <div>
+            <span id="badge-incident-id" class="text-[10px] font-mono font-bold text-slate-500">AI-SPEND-101</span>
+            <h2 id="active-incident-title" class="text-sm font-bold text-white tracking-tight leading-snug">Megaherbivore Overkill on Git Commit Messages</h2>
+          </div>
+          <div id="incident-status-badge" data-testid="incident-status-badge" class="bg-red-950 text-red-400 border border-red-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            CRITICAL OVERGRAZING
+          </div>
+        </div>
+
+        <!-- SAFETY INTERCEPT BANNER -->
+        <div id="safety-intercept-banner" data-testid="safety-intercept-banner" class="hidden bg-amber-950/80 border border-amber-600/80 rounded-lg p-3 space-y-1 text-xs text-amber-200">
+          <div class="flex items-center space-x-1.5 font-bold text-amber-300">
+            <i data-lucide="flame" class="w-4 h-4 text-amber-400 animate-pulse"></i>
+            <span>CRITICAL INTERCEPT: PRESCRIBED SAVANNA BURN</span>
+          </div>
+          <p id="safety-intercept-description" class="text-[11px] text-amber-200/90 leading-relaxed">
+            Authorized SEC 10-K regulatory cross-audit. Destructive throttling is interlocked to prevent statutory regulatory breach.
+          </p>
+          <div class="pt-1 flex items-center justify-between">
+            <span class="text-[10px] font-mono text-amber-400">Guardrail Interlock: Active</span>
+            <button 
+              data-testid="safety-allow-override-btn"
+              onclick="allowSafetyOverride()"
+              class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px] transition">
+              Approve Exception
+            </button>
+          </div>
+        </div>
+
+        <!-- ECOLOGICAL DIAGNOSIS QUOTE -->
+        <blockquote id="incident-eco-diagnosis" class="border-l-2 border-emerald-500 pl-3 text-xs italic text-slate-300 leading-relaxed bg-slate-950/50 py-1.5 pr-2 rounded-r">
+          "Trampling the woodland canopy: A 5-ton bull elephant summoned to pluck a single seed pod. 54,000 tokens of raw git diff re-sent without context caching."
+        </blockquote>
+
+        <!-- JEV DECISION RUBRIC METRICS -->
+        <div class="grid grid-cols-2 gap-2 pt-1 font-mono">
+          <div data-testid="jev-overkill-noul" class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+            <span class="text-[9px] uppercase font-bold text-slate-500 block">Jev Noul: Overkill</span>
+            <div class="flex items-center justify-between mt-1">
+              <span id="jev-overkill-val" class="text-xs font-bold text-red-400">TRUE</span>
+              <span id="jev-overkill-prob" class="text-[10px] text-slate-400">p = 0.992</span>
+            </div>
+          </div>
+          <div data-testid="jev-loop-risk" class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+            <span class="text-[9px] uppercase font-bold text-slate-500 block">Jev Choice: Tool Risk</span>
+            <span id="jev-loop-choice" class="text-xs font-bold text-emerald-400 mt-1 block">CLEAN_EXEC</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-WAY GOVERNANCE EXECUTION SWITCH -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-1.5">
+            <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>3-Way Governance Switch</span>
+          </h3>
+          <span class="text-[10px] text-slate-500 font-mono">Active Lever</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-1.5">
+          <button 
+            id="btn-mode-downscale"
+            data-testid="mode-select-AUTO_DOWNSCALE_REWRITE"
+            onclick="selectGovernanceMode('AUTO_DOWNSCALE_REWRITE')"
+            class="p-2 rounded-lg border text-left text-xs transition border-emerald-500 bg-emerald-500/10 text-emerald-300">
+            <span class="font-bold block text-[11px]">Niche Partition</span>
+            <span class="text-[9px] text-slate-400 block leading-tight mt-0.5">Downscale to Haiku + Compress</span>
+          </button>
+          <button 
+            id="btn-mode-throttle"
+            data-testid="mode-select-THROTTLE_AND_EDUCATE"
+            onclick="selectGovernanceMode('THROTTLE_AND_EDUCATE')"
+            class="p-2 rounded-lg border text-left text-xs transition border-slate-700 bg-slate-950 text-slate-400 hover:text-slate-200">
+            <span class="font-bold block text-[11px]">Parasite Intercept</span>
+            <span class="text-[9px] text-slate-400 block leading-tight mt-0.5">Halt Loop + Coaching Diff</span>
+          </button>
+          <button 
+            id="btn-mode-reallocate"
+            data-testid="mode-select-REALLOCATE_QUOTA"
+            onclick="selectGovernanceMode('REALLOCATE_QUOTA')"
+            class="p-2 rounded-lg border text-left text-xs transition border-slate-700 bg-slate-950 text-slate-400 hover:text-slate-200">
+            <span class="font-bold block text-[11px]">Robin Hood</span>
+            <span class="text-[9px] text-slate-400 block leading-tight mt-0.5">Transfer $25 to Top User</span>
+          </button>
+        </div>
+
+        <button 
+          id="execute-gov-btn"
+          data-testid="execute-remediation-btn"
+          onclick="executeGovernanceAction()"
+          class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-1.5">
+          <i data-lucide="zap" class="w-4 h-4 fill-slate-950"></i>
+          <span>Execute Governance Action</span>
+        </button>
+
+        <!-- REMEDIATION RECEIPT CARD -->
+        <div id="remediation-receipt" data-testid="remediation-receipt" class="hidden bg-slate-950 border border-emerald-900/60 rounded-lg p-3 text-xs text-slate-300 space-y-1.5 font-mono">
+          <div class="flex items-center space-x-1.5 text-emerald-400 font-bold text-[11px]">
+            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+            <span>Action Execution Receipt</span>
+          </div>
+          <div id="remediation-receipt-content" class="text-[10px] text-slate-300 leading-relaxed whitespace-pre-line">
+          </div>
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- LIVE CHALLENGE TAB ("ROAST MY STACK") -->
+  <main id="view-challenge" class="hidden flex-1 p-8 max-w-5xl mx-auto w-full space-y-6 overflow-y-auto">
+    <div class="space-y-1">
+      <div class="flex items-center space-x-2">
+        <h2 class="text-xl font-bold text-white tracking-tight flex items-center space-x-2">
+          <span>The ZeroDog Challenge: Roast My AI Stack</span>
+        </h2>
+        <span class="bg-orange-950 text-orange-400 border border-orange-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Instant Auditor</span>
+      </div>
+      <p class="text-xs text-slate-400">
+        Challenge ZeroDog in front of the judges. Paste your project's prompt or MCP tool schemas to audit model overkill, loop vulnerability, and projected token burn in under 100ms.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+      
+      <!-- INPUT COLUMN -->
+      <div class="col-span-6 bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Target Frontier Model</label>
+          <select id="challenge-model-select" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 font-mono">
+            <option value="claude-3-opus">Claude 3 Opus ($15.00 / M tokens)</option>
+            <option value="claude-3-7-sonnet">Claude 3.7 Sonnet ($3.00 / M tokens)</option>
+            <option value="gpt-4o">OpenAI GPT-4o ($2.50 / M tokens)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Prompt Context / Task Instructions</label>
+          <textarea 
+            id="challenge-prompt-input"
+            data-testid="challenge-input-prompt"
+            rows="5"
+            placeholder="e.g. 'Format this git commit message: [Paste 200 lines of git diff here]'"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 font-mono"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">MCP Tool Definitions / Schemas (Optional)</label>
+          <textarea 
+            id="challenge-mcp-input"
+            rows="3"
+            placeholder="e.g. 'tool: execute_sql, retry: true, max_turns: 20'"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-500 font-mono"></textarea>
+        </div>
+
+        <button 
+          data-testid="challenge-analyze-btn"
+          onclick="runStackChallenge()"
+          class="w-full bg-orange-600 hover:bg-orange-500 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center space-x-2 shadow-lg shadow-orange-600/20">
+          <i data-lucide="flame" class="w-4 h-4 fill-slate-950"></i>
+          <span>Roast My AI Stack Now</span>
+        </button>
+      </div>
+
+      <!-- AUDIT REPORT COLUMN -->
+      <div class="col-span-6 bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-1.5">
+          <i data-lucide="gauge" class="w-4 h-4 text-orange-400"></i>
+          <span>Edge Trophic Audit Report</span>
+        </h3>
+
+        <div id="challenge-results-empty" class="flex-1 flex flex-col items-center justify-center text-slate-600 text-center p-6 border border-dashed border-slate-800 rounded-lg space-y-2">
+          <i data-lucide="shield-question" class="w-8 h-8 text-slate-700"></i>
+          <span class="text-xs">Paste your stack on the left and click 'Roast My AI Stack' to evaluate.</span>
+        </div>
+
+        <div id="challenge-results-panel" class="hidden flex-1 space-y-3 font-mono">
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+              <span class="text-[9px] uppercase font-bold text-slate-500 block">Jev Overkill Probability</span>
+              <span id="challenge-overkill-prob" class="text-sm font-bold text-red-400">p = 0.985</span>
+            </div>
+            <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+              <span class="text-[9px] uppercase font-bold text-slate-500 block">Prompt Craft Score</span>
+              <span id="challenge-craft-score" class="text-sm font-bold text-emerald-400">24.0 / 100</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="text-[9px] uppercase font-bold text-slate-500 block">Projected Waste</span>
+            <div class="flex items-baseline justify-between">
+              <span id="challenge-daily-waste" class="text-lg font-bold text-red-400 font-mono">$142.50 / day</span>
+              <span id="challenge-savings-pct" class="text-xs font-bold text-emerald-400 font-mono">92.4% Savable</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="text-[9px] uppercase font-bold text-slate-500 block">Ecological Diagnosis</span>
+            <p id="challenge-eco-diag" class="text-xs text-slate-300 leading-relaxed font-sans"></p>
+          </div>
+
+          <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+            <span class="text-[9px] uppercase font-bold text-emerald-400 block">1-Click Niche-Partitioned Prompt</span>
+            <pre id="challenge-optimized-rewrite" class="text-[10px] text-slate-300 whitespace-pre-wrap leading-tight bg-slate-900 p-2 rounded border border-slate-800"></pre>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let globalState = null;
+    let currentIncident = null;
+    let selectedMode = 'AUTO_DOWNSCALE_REWRITE';
+
+    async function fetchState() {
+      try {
+        const res = await fetch('/api/state');
+        globalState = await res.json();
+        renderGlobalMetrics();
+        renderIncidentsList();
+        renderLeaderboard();
+        
+        const inc = globalState.active_incidents.find(i => i.incident_id === globalState.current_incident_id) || globalState.active_incidents[0];
+        loadIncident(inc);
+      } catch (err) {
+        console.error("Failed to fetch state:", err);
+      }
+    }
+
+    function renderGlobalMetrics() {
+      if (!globalState) return;
+      document.getElementById('metric-tokens').innerText = (globalState.total_tokens_monitored / 1000000).toFixed(1) + 'M';
+      document.getElementById('metric-savings').innerText = '$' + globalState.net_zerodog_savings_usd.toFixed(2);
+      document.getElementById('metric-datadog').innerText = '$' + globalState.datadog_fees_eliminated_usd.toFixed(2);
+    }
+
+    function renderIncidentsList() {
+      if (!globalState) return;
+      const container = document.getElementById('incident-cards-container');
+      container.innerHTML = '';
+
+      globalState.active_incidents.forEach(inc => {
+        const isSelected = currentIncident && currentIncident.incident_id === inc.incident_id;
+        const card = document.createElement('div');
+        card.setAttribute('data-testid', `incident-card-${inc.incident_id}`);
+        card.onclick = () => selectIncidentById(inc.incident_id);
+        card.className = `p-3 rounded-xl border cursor-pointer transition ${
+          isSelected 
+            ? 'bg-slate-800 border-emerald-500 shadow-md shadow-emerald-500/10' 
+            : 'bg-slate-900/80 border-slate-800 hover:border-slate-700'
+        }`;
+
+        let statusColor = 'text-red-400 bg-red-950 border-red-800';
+        if (inc.status === 'PRESCRIBED_BURN_ACTIVE') statusColor = 'text-amber-400 bg-amber-950 border-amber-800';
+        if (inc.remediated) statusColor = 'text-emerald-400 bg-emerald-950 border-emerald-800';
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-mono font-bold text-slate-400">${inc.incident_id}</span>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase ${statusColor}">
+              ${inc.remediated ? 'OPTIMIZED' : inc.status.replace(/_/g, ' ')}
+            </span>
+          </div>
+          <div class="text-xs font-bold text-slate-100 truncate">${inc.title}</div>
+          <div class="text-[11px] text-slate-400 truncate mt-0.5">${inc.verdict.user_name} • ${inc.verdict.current_model.replace('-20240229', '').replace('-20241022', '').replace('-20250219', '')}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderLeaderboard() {
+      if (!globalState) return;
+      const tbody = document.getElementById('leaderboard-table-body');
+      tbody.innerHTML = '';
+
+      globalState.users.forEach(u => {
+        let badgeColor = 'bg-emerald-950 text-emerald-400 border-emerald-800';
+        if (u.efficiency_rank === 'AT_RISK') badgeColor = 'bg-amber-950 text-amber-400 border-amber-800';
+        if (u.efficiency_rank === 'SHAME') badgeColor = 'bg-red-950 text-red-400 border-red-800';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition';
+        tr.innerHTML = `
+          <td class="py-1.5 font-sans flex items-center space-x-1.5">
+            <span>${u.avatar_emoji}</span>
+            <span class="font-medium text-slate-200">${u.name}</span>
+          </td>
+          <td class="py-1.5">
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded border ${badgeColor}">${u.efficiency_rank}</span>
+          </td>
+          <td class="py-1.5 text-slate-300">${u.prompt_craft_index}%</td>
+          <td class="py-1.5 font-bold ${u.daily_quota_usd > 70 ? 'text-emerald-400' : 'text-slate-300'}">$${u.daily_quota_usd.toFixed(0)}/day</td>
+          <td class="py-1.5 text-right font-bold text-slate-200">${u.reputation_score}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function loadIncident(inc) {
+      currentIncident = inc;
+      document.getElementById('badge-incident-id').innerText = inc.incident_id;
+      document.getElementById('active-incident-title').innerText = inc.title;
+      document.getElementById('incident-eco-diagnosis').innerText = `"${inc.verdict.ecological_diagnosis}"`;
+
+      const statusBadge = document.getElementById('incident-status-badge');
+      if (inc.remediated) {
+        statusBadge.className = 'bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider';
+        statusBadge.innerText = 'REMEDIATED (OPTIMIZED)';
+      } else if (inc.status === 'PRESCRIBED_BURN_ACTIVE') {
+        statusBadge.className = 'bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider';
+        statusBadge.innerText = 'PRESCRIBED BURN ACTIVE';
+      } else {
+        statusBadge.className = 'bg-red-950 text-red-400 border border-red-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider';
+        statusBadge.innerText = inc.status.replace(/_/g, ' ');
+      }
+
+      document.getElementById('jev-overkill-val').innerText = inc.verdict.model_overkill.verdict ? 'TRUE' : 'FALSE';
+      document.getElementById('jev-overkill-val').className = `text-xs font-bold ${inc.verdict.model_overkill.verdict ? 'text-red-400' : 'text-emerald-400'}`;
+      document.getElementById('jev-overkill-prob').innerText = `p = ${inc.verdict.model_overkill.probability.toFixed(3)}`;
+      document.getElementById('jev-loop-choice').innerText = inc.verdict.mcp_loop_risk;
+      document.getElementById('jev-loop-choice').className = `text-xs font-bold ${inc.verdict.mcp_loop_risk === 'CLEAN_EXECUTION' ? 'text-emerald-400' : 'text-red-400'}`;
+
+      const safetyBanner = document.getElementById('safety-intercept-banner');
+      if (inc.safety_intercept && inc.safety_intercept.intercept_active) {
+        safetyBanner.classList.remove('hidden');
+        document.getElementById('safety-intercept-description').innerText = `${inc.safety_intercept.reason_description} ${inc.safety_intercept.risk_if_throttled}`;
+      } else {
+        safetyBanner.classList.add('hidden');
+      }
+
+      updateExecuteButtonState();
+      renderCausalGraph(inc);
+      selectGovernanceMode(inc.active_governance_mode || 'AUTO_DOWNSCALE_REWRITE');
+
+      const receipt = document.getElementById('remediation-receipt');
+      if (inc.remediated) {
+        receipt.classList.remove('hidden');
+        document.getElementById('remediation-receipt-content').innerText = inc.claude_coaching_notes;
+      } else {
+        receipt.classList.add('hidden');
+      }
+
+      renderIncidentsList();
+    }
+
+    function renderCausalGraph(inc) {
+      const container = document.getElementById('svg-graph-container');
+      const nodes = inc.nodes || [];
+      const edges = inc.edges || [];
+
+      const width = 440;
+      const height = 200;
+      
+      const nodeCoords = {
+        0: { x: 50, y: 100 },
+        1: { x: 150, y: 50 },
+        2: { x: 250, y: 100 },
+        3: { x: 350, y: 50 },
+        4: { x: 350, y: 150 },
+        5: { x: 150, y: 150 }
+      };
+
+      let svgHtml = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" class="overflow-visible">`;
+
+      edges.forEach((edge, idx) => {
+        const srcIdx = nodes.findIndex(n => n.id === edge.source);
+        const tgtIdx = nodes.findIndex(n => n.id === edge.target);
+        if (srcIdx !== -1 && tgtIdx !== -1) {
+          const s = nodeCoords[srcIdx % 6];
+          const t = nodeCoords[tgtIdx % 6];
+          const isRemediated = inc.remediated;
+          svgHtml += `
+            <line x1="${s.x}" y1="${s.y}" x2="${t.x}" y2="${t.y}" 
+              stroke="${isRemediated ? '#10b981' : '#475569'}" 
+              stroke-width="${isRemediated ? '3' : '1.5'}" 
+              stroke-dasharray="${edge.relation === 'BLOCKED_BY' ? '4' : 'none'}"
+              class="${isRemediated ? 'edge-remediated' : ''}" />
+          `;
+        }
+      });
+
+      nodes.forEach((node, idx) => {
+        const pt = nodeCoords[idx % 6];
+        let color = '#3b82f6';
+        if (node.status === 'critical') color = '#ef4444';
+        if (node.status === 'warning') color = '#f59e0b';
+        if (node.status === 'intercept') color = '#f59e0b';
+        if (node.status === 'remediated' || inc.remediated) color = '#10b981';
+
+        svgHtml += `
+          <g data-testid="graph-node-${node.id}" class="cursor-pointer transition hover:opacity-80" onclick="alert('Causal Node: ${node.label}\\nStatus: ${node.status}')">
+            <circle cx="${pt.x}" cy="${pt.y}" r="14" fill="#0f172a" stroke="${color}" stroke-width="2.5" />
+            <text x="${pt.x}" y="${pt.y + 4}" fill="#e2e8f0" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">${idx + 1}</text>
+            <text x="${pt.x}" y="${pt.y + 26}" fill="#94a3b8" font-size="9" font-family="sans-serif" text-anchor="middle">${node.label.split(':')[0].substring(0, 16)}</text>
+          </g>
+        `;
+      });
+
+      svgHtml += `</svg>`;
+      container.innerHTML = svgHtml;
+    }
+
+    async function selectIncidentById(incId) {
+      try {
+        const res = await fetch('/api/incident/select', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ incident_id: incId })
+        });
+        const data = await res.json();
+        loadIncident(data.incident);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function selectGovernanceMode(mode) {
+      selectedMode = mode;
+      ['downscale', 'throttle', 'reallocate'].forEach(m => {
+        const btn = document.getElementById(`btn-mode-${m}`);
+        btn.className = 'p-2 rounded-lg border text-left text-xs transition border-slate-700 bg-slate-950 text-slate-400 hover:text-slate-200';
+      });
+
+      if (mode === 'AUTO_DOWNSCALE_REWRITE') {
+        document.getElementById('btn-mode-downscale').className = 'p-2 rounded-lg border text-left text-xs transition border-emerald-500 bg-emerald-500/10 text-emerald-300';
+      } else if (mode === 'THROTTLE_AND_EDUCATE') {
+        document.getElementById('btn-mode-throttle').className = 'p-2 rounded-lg border text-left text-xs transition border-amber-500 bg-amber-500/10 text-amber-300';
+      } else if (mode === 'REALLOCATE_QUOTA') {
+        document.getElementById('btn-mode-reallocate').className = 'p-2 rounded-lg border text-left text-xs transition border-teal-500 bg-teal-500/10 text-teal-300';
+      }
+
+      updateExecuteButtonState();
+    }
+
+    function updateExecuteButtonState() {
+      const btn = document.getElementById('execute-gov-btn');
+      if (currentIncident && currentIncident.safety_intercept && currentIncident.safety_intercept.intercept_active && selectedMode === 'THROTTLE_AND_EDUCATE') {
+        btn.setAttribute('data-intercept-blocked', 'true');
+        btn.disabled = true;
+        btn.className = 'w-full bg-slate-800 text-slate-500 cursor-not-allowed font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center space-x-1.5 border border-red-900/40';
+        btn.innerHTML = `<i data-lucide="shield-x" class="w-4 h-4 text-red-400"></i><span>BLOCKED BY SAFETY INTERCEPT</span>`;
+      } else {
+        btn.removeAttribute('data-intercept-blocked');
+        btn.disabled = false;
+        btn.className = 'w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg text-xs transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-1.5';
+        btn.innerHTML = `<i data-lucide="zap" class="w-4 h-4 fill-slate-950"></i><span>Execute Governance Action</span>`;
+      }
+      lucide.createIcons();
+    }
+
+    function allowSafetyOverride() {
+      selectGovernanceMode('REALLOCATE_QUOTA');
+    }
+
+    async function executeGovernanceAction() {
+      if (!currentIncident) return;
+      try {
+        const res = await fetch('/api/governance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            incident_id: currentIncident.incident_id,
+            mode: selectedMode,
+            force_override: false
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          alert(errData.detail.message || "Action blocked by guardrail.");
+          return;
+        }
+
+        const data = await res.json();
+        const receipt = document.getElementById('remediation-receipt');
+        receipt.classList.remove('hidden');
+        document.getElementById('remediation-receipt-content').innerText = data.action_receipt_markdown;
+
+        fetchState();
+      } catch (err) {
+        console.error("Execution error:", err);
+      }
+    }
+
+    async function submitQuery() {
+      const q = document.getElementById('cognee-query-input').value.trim();
+      if (!q) return;
+      try {
+        const res = await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q })
+        });
+        const data = await res.json();
+        loadIncident(data.incident);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function applyPreset(queryText) {
+      document.getElementById('cognee-query-input').value = queryText;
+      submitQuery();
+    }
+
+    async function resetDemoState() {
+      try {
+        await fetch('/api/reset', { method: 'POST' });
+        fetchState();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function switchTab(tab) {
+      const cmdTab = document.getElementById('view-command');
+      const challengeTab = document.getElementById('view-challenge');
+      const cmdBtn = document.getElementById('tab-command-btn');
+      const challengeBtn = document.getElementById('tab-challenge-btn');
+
+      if (tab === 'command') {
+        cmdTab.classList.remove('hidden');
+        challengeTab.classList.add('hidden');
+        cmdBtn.className = 'px-4 py-1.5 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 transition flex items-center space-x-2';
+        challengeBtn.className = 'px-4 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center space-x-2';
+      } else {
+        cmdTab.classList.add('hidden');
+        challengeTab.classList.remove('hidden');
+        challengeBtn.className = 'px-4 py-1.5 rounded-md text-xs font-semibold bg-orange-500/10 text-orange-400 border border-orange-500/20 transition flex items-center space-x-2';
+        cmdBtn.className = 'px-4 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center space-x-2';
+      }
+      lucide.createIcons();
+    }
+
+    async function runStackChallenge() {
+      const promptText = document.getElementById('challenge-prompt-input').value.trim();
+      const model = document.getElementById('challenge-model-select').value;
+      const mcpTools = document.getElementById('challenge-mcp-input').value.trim();
+
+      if (!promptText) {
+        alert("Please enter a prompt context or system directive to roast.");
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/challenge/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt_text: promptText,
+            target_model: model,
+            mcp_tools_text: mcpTools
+          })
+        });
+        const data = await res.json();
+
+        document.getElementById('challenge-results-empty').classList.add('hidden');
+        document.getElementById('challenge-results-panel').classList.remove('hidden');
+
+        document.getElementById('challenge-overkill-prob').innerText = `p = ${data.jev_overkill.probability.toFixed(3)}`;
+        document.getElementById('challenge-craft-score').innerText = `${data.prompt_craft_score} / 100`;
+        document.getElementById('challenge-daily-waste').innerText = `$${data.projected_daily_waste_usd.toFixed(2)} / day`;
+        document.getElementById('challenge-savings-pct').innerText = `${data.savings_percentage}% Savable`;
+        document.getElementById('challenge-eco-diag').innerText = data.ecological_diagnosis;
+        document.getElementById('challenge-optimized-rewrite').innerText = data.claude_optimized_rewrite;
+
+      } catch (err) {
+        console.error("Challenge error:", err);
+      }
+    }
+
+    window.onload = () => {
+      fetchState();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>

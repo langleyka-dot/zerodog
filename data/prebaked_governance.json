@@ -1,0 +1,455 @@
+{
+  "metrics": {
+    "total_tokens_monitored": 14850000,
+    "total_spend_incurred_usd": 1485.2,
+    "net_zerodog_savings_usd": 1218.4,
+    "datadog_fees_eliminated_usd": 384.6,
+    "trophic_efficiency_ratio": 0.82
+  },
+  "users": [
+    {
+      "user_id": "user_elena",
+      "name": "Elena Rostova",
+      "department": "Platform Architecture",
+      "avatar_emoji": "\ud83e\udd85",
+      "daily_quota_usd": 80.0,
+      "current_spend_usd": 14.2,
+      "efficiency_rank": "ELITE",
+      "prompt_craft_index": 98.4,
+      "reputation_score": 985,
+      "bonus_tokens_awarded_usd": 45.0,
+      "penalties_incurred_usd": 0.0
+    },
+    {
+      "user_id": "user_marcus",
+      "name": "Marcus Vance",
+      "department": "ML Infrastructure",
+      "avatar_emoji": "\ud83d\udc06",
+      "daily_quota_usd": 80.0,
+      "current_spend_usd": 18.5,
+      "efficiency_rank": "ELITE",
+      "prompt_craft_index": 95.1,
+      "reputation_score": 940,
+      "bonus_tokens_awarded_usd": 30.0,
+      "penalties_incurred_usd": 0.0
+    },
+    {
+      "user_id": "user_alex",
+      "name": "Alex Rivera",
+      "department": "Quantitative Risk",
+      "avatar_emoji": "\ud83e\udd81",
+      "daily_quota_usd": 500.0,
+      "current_spend_usd": 382.4,
+      "efficiency_rank": "EFFICIENT",
+      "prompt_craft_index": 89.0,
+      "reputation_score": 875,
+      "bonus_tokens_awarded_usd": 0.0,
+      "penalties_incurred_usd": 0.0
+    },
+    {
+      "user_id": "user_sarah",
+      "name": "Sarah Chen",
+      "department": "AI Agent Systems",
+      "avatar_emoji": "\ud83e\udd8a",
+      "daily_quota_usd": 60.0,
+      "current_spend_usd": 54.1,
+      "efficiency_rank": "AT_RISK",
+      "prompt_craft_index": 48.0,
+      "reputation_score": 520,
+      "bonus_tokens_awarded_usd": 0.0,
+      "penalties_incurred_usd": 15.0
+    },
+    {
+      "user_id": "user_dave",
+      "name": "Dave Miller",
+      "department": "Core Backend",
+      "avatar_emoji": "\ud83e\udda3",
+      "daily_quota_usd": 60.0,
+      "current_spend_usd": 58.7,
+      "efficiency_rank": "SHAME",
+      "prompt_craft_index": 22.0,
+      "reputation_score": 310,
+      "bonus_tokens_awarded_usd": 0.0,
+      "penalties_incurred_usd": 35.0
+    },
+    {
+      "user_id": "user_kevin",
+      "name": "Kevin Park",
+      "department": "Growth Engineering",
+      "avatar_emoji": "\ud83e\udd8f",
+      "daily_quota_usd": 50.0,
+      "current_spend_usd": 49.2,
+      "efficiency_rank": "SHAME",
+      "prompt_craft_index": 14.5,
+      "reputation_score": 240,
+      "bonus_tokens_awarded_usd": 0.0,
+      "penalties_incurred_usd": 40.0
+    }
+  ],
+  "incidents": [
+    {
+      "incident_id": "AI-SPEND-101",
+      "title": "Megaherbivore Overkill on Git Commit Messages",
+      "subtitle": "Dave Miller routing 54,000 un-cached tokens into Claude 3 Opus for simple commit formatting",
+      "status": "CRITICAL_OVERGRAZING",
+      "active_governance_mode": "AUTO_DOWNSCALE_REWRITE",
+      "remediated": false,
+      "verdict": {
+        "session_id": "sess_dave_commit_format_982",
+        "user_id": "user_dave",
+        "user_name": "Dave Miller",
+        "department": "Core Backend",
+        "current_model": "claude-3-opus-20240229",
+        "recommended_model": "claude-3-5-haiku-20241022",
+        "trophic_tier_current": "MEGAHERBIVORE",
+        "trophic_tier_recommended": "MICROFORAGER",
+        "tokens_burned": 54200,
+        "cost_incurred_usd": 1.355,
+        "cost_with_zero_dog_usd": 0.008,
+        "datadog_span_fee_saved_usd": 0.035,
+        "model_overkill": {
+          "verdict": true,
+          "probability": 0.992,
+          "confidence_interval": 0.985,
+          "rubric_id": "rubric_trophic_overkill_v2"
+        },
+        "mcp_loop_risk": "CLEAN_EXECUTION",
+        "prompt_craft_score": 22.0,
+        "detected_antipattern": "OPUS_MEGAHERBIVORE_FOR_TRIVIAL_SYNTAX",
+        "ecological_diagnosis": "Trampling the woodland canopy: A 5-ton bull elephant summoned to pluck a single seed pod. 54,000 tokens of raw git diff re-sent without context caching.",
+        "prompt_preview": "You are a master Git assistant. Here is the entire diff of 12 files across 4 PR branches [54k tokens dumped]. Please summarize this in one conventional commit line.",
+        "mcp_tool_chain": [
+          "git_diff_local"
+        ]
+      },
+      "safety_intercept": {
+        "intercept_active": false,
+        "authorized_job_id": null,
+        "authorized_job_name": null,
+        "ecological_analogy": null,
+        "reason_description": null,
+        "risk_if_throttled": null,
+        "override_allowed": true
+      },
+      "nodes": [
+        {
+          "id": "node_user_dave",
+          "label": "Dave Miller (@dchen)",
+          "node_type": "user",
+          "status": "critical",
+          "metadata": {
+            "role": "Core Backend Lead",
+            "rank": "SHAME"
+          }
+        },
+        {
+          "id": "node_prompt_git",
+          "label": "Prompt: Raw 54k Git Diff Dump",
+          "node_type": "prompt",
+          "status": "critical",
+          "metadata": {
+            "tokens": 54200,
+            "cached": false
+          }
+        },
+        {
+          "id": "node_model_opus",
+          "label": "Model: Claude 3 Opus",
+          "node_type": "model",
+          "status": "critical",
+          "metadata": {
+            "tier": "MEGAHERBIVORE",
+            "cost_per_m": "$15.00"
+          }
+        },
+        {
+          "id": "node_model_haiku",
+          "label": "Target: Claude 3.5 Haiku",
+          "node_type": "model",
+          "status": "healthy",
+          "metadata": {
+            "tier": "MICROFORAGER",
+            "cost_per_m": "$0.80"
+          }
+        },
+        {
+          "id": "node_pool_backend",
+          "label": "Quota Pool: Core Engineering",
+          "node_type": "quota_pool",
+          "status": "warning",
+          "metadata": {
+            "burn_rate": "$58.70 / $60.00"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "node_user_dave",
+          "target": "node_prompt_git",
+          "relation": "FORAGES_WITH"
+        },
+        {
+          "source": "node_prompt_git",
+          "target": "node_model_opus",
+          "relation": "BURNS_AT"
+        },
+        {
+          "source": "node_model_opus",
+          "target": "node_pool_backend",
+          "relation": "DRAINS_POOL"
+        },
+        {
+          "source": "node_prompt_git",
+          "target": "node_model_haiku",
+          "relation": "GOVERNED_BY"
+        }
+      ],
+      "claude_optimized_prompt": "// ZeroDog Niche-Partitioned Optimization:\n// 1. Re-routed from Claude 3 Opus -> Claude 3.5 Haiku (99.4% cost reduction)\n// 2. Diff pre-summarized at edge (54k tokens -> 180 tokens)\n// 3. Prompt Caching headers injected for repository convention context\n\nFormat the following staged changes into a conventional commit header + body:\nType: fix(auth)\nImpact: Resolves Redis session timeout race condition\nChanged files: 2 (auth/token.go, auth/session.go)",
+      "claude_coaching_notes": "Ecological Coaching: You summoned a 5-ton bull elephant (Opus) to pluck a single thorn pod. Use Claude 3.5 Haiku with structured diff headers. Saves $1.34 per commit."
+    },
+    {
+      "incident_id": "AI-SPEND-102",
+      "title": "Parasitic Algal Bloom: Recursive MCP Tool Loop",
+      "subtitle": "Customer support agent stuck in 16-turn retry loop on database query tool",
+      "status": "RUNAWAY_PARASITIC_LOOP",
+      "active_governance_mode": "THROTTLE_AND_EDUCATE",
+      "remediated": false,
+      "verdict": {
+        "session_id": "sess_sarah_mcp_loop_403",
+        "user_id": "user_sarah",
+        "user_name": "Sarah Chen",
+        "department": "AI Agent Systems",
+        "current_model": "claude-3-7-sonnet-20250219",
+        "recommended_model": "claude-3-7-sonnet-20250219",
+        "trophic_tier_current": "MESOHERBIVORE",
+        "trophic_tier_recommended": "MESOHERBIVORE",
+        "tokens_burned": 192000,
+        "cost_incurred_usd": 4.82,
+        "cost_with_zero_dog_usd": 0.14,
+        "datadog_span_fee_saved_usd": 0.056,
+        "model_overkill": {
+          "verdict": false,
+          "probability": 0.32,
+          "confidence_interval": 0.94,
+          "rubric_id": "rubric_trophic_overkill_v2"
+        },
+        "mcp_loop_risk": "TOOL_RETRY_STORM",
+        "prompt_craft_score": 38.0,
+        "detected_antipattern": "MCP_TOOL_RETRY_STORM",
+        "ecological_diagnosis": "An uncontrolled algal bloom: Agent re-sending 35,000 tokens of growing conversation history across 16 consecutive SQL syntax failure retries, suffocating the stream.",
+        "prompt_preview": "Agent State: Tool 'execute_customer_lookup' returned error: 'Unrecognized column customer_guid'. Agent retrying query: SELECT * FROM users WHERE customer_guid = ... [Loop iteration #16]",
+        "mcp_tool_chain": [
+          "postgres_mcp::execute_customer_lookup",
+          "postgres_mcp::execute_customer_lookup",
+          "postgres_mcp::execute_customer_lookup"
+        ]
+      },
+      "safety_intercept": {
+        "intercept_active": false,
+        "authorized_job_id": null,
+        "authorized_job_name": null,
+        "ecological_analogy": null,
+        "reason_description": null,
+        "risk_if_throttled": null,
+        "override_allowed": true
+      },
+      "nodes": [
+        {
+          "id": "node_user_sarah",
+          "label": "Sarah Chen (@schen)",
+          "node_type": "user",
+          "status": "warning",
+          "metadata": {
+            "role": "Agent Systems Engineer",
+            "rank": "AT_RISK"
+          }
+        },
+        {
+          "id": "node_prompt_agent",
+          "label": "Agent: Customer Support Bot",
+          "node_type": "prompt",
+          "status": "critical",
+          "metadata": {
+            "turns": 16,
+            "loop": true
+          }
+        },
+        {
+          "id": "node_mcp_db",
+          "label": "MCP Server: postgres-gateway",
+          "node_type": "mcp_server",
+          "status": "critical",
+          "metadata": {
+            "tool": "execute_customer_lookup",
+            "err_count": 16
+          }
+        },
+        {
+          "id": "node_model_sonnet",
+          "label": "Model: Claude 3.7 Sonnet",
+          "node_type": "model",
+          "status": "warning",
+          "metadata": {
+            "tier": "MESOHERBIVORE",
+            "burn": "$4.82"
+          }
+        },
+        {
+          "id": "node_pool_agents",
+          "label": "Quota Pool: Agent Playground",
+          "node_type": "quota_pool",
+          "status": "critical",
+          "metadata": {
+            "burn_rate": "$54.10 / $60.00"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "node_user_sarah",
+          "target": "node_prompt_agent",
+          "relation": "FORAGES_WITH"
+        },
+        {
+          "source": "node_prompt_agent",
+          "target": "node_mcp_db",
+          "relation": "INVOKES_TOOL"
+        },
+        {
+          "source": "node_prompt_agent",
+          "target": "node_model_sonnet",
+          "relation": "BURNS_AT"
+        },
+        {
+          "source": "node_model_sonnet",
+          "target": "node_pool_agents",
+          "relation": "DRAINS_POOL"
+        }
+      ],
+      "claude_optimized_prompt": "// ZeroDog Circuit-Breaker Injection:\n// Loop severed at iteration #3. \n// Validated schema injected into system context:\n// Table 'users': columns [id, email, uuid, created_at] (customer_guid does not exist).\nSELECT id, email, uuid FROM users WHERE uuid = :customer_uuid LIMIT 1;",
+      "claude_coaching_notes": "Algal Bloom Intercept: Circuit breaker halted execution after 3 consecutive schema failures. Tool schema updated; saved 12 redundant roundtrips ($4.68)."
+    },
+    {
+      "incident_id": "AI-SPEND-202",
+      "title": "Prescribed Savanna Fire: Regulatory Batch Audit",
+      "subtitle": "Alex Rivera running $450/hr batch inference surge across 1.2M tokens on Claude 3.7 Sonnet",
+      "status": "PRESCRIBED_BURN_ACTIVE",
+      "active_governance_mode": "REALLOCATE_QUOTA",
+      "remediated": false,
+      "verdict": {
+        "session_id": "sess_alex_sec_audit_881",
+        "user_id": "user_alex",
+        "user_name": "Alex Rivera",
+        "department": "Quantitative Risk",
+        "current_model": "claude-3-7-sonnet-20250219",
+        "recommended_model": "claude-3-7-sonnet-20250219",
+        "trophic_tier_current": "MESOHERBIVORE",
+        "trophic_tier_recommended": "MESOHERBIVORE",
+        "tokens_burned": 1240000,
+        "cost_incurred_usd": 382.4,
+        "cost_with_zero_dog_usd": 382.4,
+        "datadog_span_fee_saved_usd": 0.434,
+        "model_overkill": {
+          "verdict": false,
+          "probability": 0.08,
+          "confidence_interval": 0.99,
+          "rubric_id": "rubric_trophic_overkill_v2"
+        },
+        "mcp_loop_risk": "CLEAN_EXECUTION",
+        "prompt_craft_score": 89.0,
+        "detected_antipattern": "NONE (AUTHORIZED PRESCRIBED BURN)",
+        "ecological_diagnosis": "A vital ecological fire clearing moribund thatch: Authorized SEC 10-K regulatory cross-audit. Extinguishing this fire with a knee-jerk throttle will cause a catastrophic statutory breach.",
+        "prompt_preview": "[BATCH EXECUTION ID: SEC-Q3-88219] Cross-referencing 10-K risk disclosure revisions against statutory SEC Edgar baseline requirements...",
+        "mcp_tool_chain": [
+          "sec_edgar_mcp::fetch_filing",
+          "legal_doc_mcp::verify_disclosure"
+        ]
+      },
+      "safety_intercept": {
+        "intercept_active": true,
+        "authorized_job_id": "JOB-SEC-COMPLIANCE-Q3",
+        "authorized_job_name": "Quarterly SEC Filing Cross-Check",
+        "ecological_analogy": "Prescribed ecological disturbance regime. Clearing dead biomass to prevent regulatory wildfire.",
+        "reason_description": "Time-sensitive statutory regulatory disclosure run authorized under Corporate Legal Mandate #994.",
+        "risk_if_throttled": "CRITICAL RISK: Statutory filing deadline breach. Potential SEC inquiry and $250k penalty for delayed submission.",
+        "override_allowed": true
+      },
+      "nodes": [
+        {
+          "id": "node_user_alex",
+          "label": "Alex Rivera (@arivera)",
+          "node_type": "user",
+          "status": "healthy",
+          "metadata": {
+            "role": "Staff Quant",
+            "rank": "EFFICIENT"
+          }
+        },
+        {
+          "id": "node_prompt_sec",
+          "label": "Prompt: Batch SEC 10-K Audit",
+          "node_type": "prompt",
+          "status": "intercept",
+          "metadata": {
+            "tokens": 1240000,
+            "batch": true
+          }
+        },
+        {
+          "id": "node_job_sec",
+          "label": "Prescribed Job: SEC Q3 Mandate",
+          "node_type": "prescribed_job",
+          "status": "intercept",
+          "metadata": {
+            "job_id": "JOB-SEC-COMPLIANCE-Q3",
+            "due": "Tonight 11:59 PM"
+          }
+        },
+        {
+          "id": "node_model_sonnet2",
+          "label": "Model: Claude 3.7 Sonnet",
+          "node_type": "model",
+          "status": "healthy",
+          "metadata": {
+            "tier": "MESOHERBIVORE",
+            "burn": "$382.40"
+          }
+        },
+        {
+          "id": "node_pool_compliance",
+          "label": "Quota Pool: Risk & Compliance",
+          "node_type": "quota_pool",
+          "status": "healthy",
+          "metadata": {
+            "allocated": "$500.00",
+            "authorized": true
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "node_user_alex",
+          "target": "node_prompt_sec",
+          "relation": "FORAGES_WITH"
+        },
+        {
+          "source": "node_prompt_sec",
+          "target": "node_job_sec",
+          "relation": "BLOCKED_BY"
+        },
+        {
+          "source": "node_prompt_sec",
+          "target": "node_model_sonnet2",
+          "relation": "BURNS_AT"
+        },
+        {
+          "source": "node_job_sec",
+          "target": "node_pool_compliance",
+          "relation": "GOVERNED_BY"
+        }
+      ],
+      "claude_optimized_prompt": "// ZeroDog Safety Intercept Verified:\n// Authorized batch execution recognized. High-priority batch tier allocated with prompt-caching pinned.",
+      "claude_coaching_notes": "Safety Intercept Triggered: Verified authorized regulatory disturbance. Destructive throttling interlocked to preserve statutory compliance."
+    }
+  ]
+}
